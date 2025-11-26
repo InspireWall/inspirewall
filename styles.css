@@ -1,0 +1,550 @@
+/* ==========================================
+
+   INSPIREWALL - CINEMATIC LANDING PAGE
+   Premium, Minimal, Motivational
+   ========================================== */
+
+/* CSS Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette - Dark Cinematic */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-gradient-start: #0a0a0a;
+    --bg-gradient-end: #1a1a1a;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #666666;
+    
+    --accent-primary: #ffffff;
+    --accent-glow: rgba(255, 255, 255, 0.1);
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 6rem;
+    --spacing-2xl: 8rem;
+    
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.4s ease;
+    --transition-slow: 0.8s ease;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--font-family);
+    background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Cinematic Background Effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: subtleRotate 60s linear infinite;
+}
+
+@keyframes subtleRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   HERO SECTION
+   ========================================== */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: var(--spacing-md);
+    background: 
+        radial-gradient(ellipse at top, rgba(60, 60, 60, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(30, 30, 30, 0.2) 0%, transparent 50%);
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 1;
+    transform: translateY(-2rem);
+}
+
+.logo-container {
+    margin-bottom: var(--spacing-md);
+}
+
+.logo {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff 0%, #d0d0d0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+.tagline {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: var(--font-weight-light);
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.scroll-line {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(180deg, transparent 0%, var(--text-muted) 50%, transparent 100%);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(10px); }
+}
+
+/* ==========================================
+   WALLPAPER SHOWCASE SECTION
+   ========================================== */
+
+.showcase {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2xl) var(--spacing-md);
+    position: relative;
+    z-index: 1;
+}
+
+.showcase-container {
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md);
+}
+
+.wallpaper-card {
+    position: relative;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all var(--transition-slow);
+}
+
+.wallpaper-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.wallpaper-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-medium);
+    cursor: pointer;
+}
+
+.wallpaper-image:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+.wallpaper-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.wallpaper-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Placeholder styling for when images are loading */
+.wallpaper-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    z-index: -1;
+}
+
+/* ==========================================
+   WISHLIST / EMAIL CAPTURE SECTION
+   ========================================== */
+
+.wishlist {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2xl) var(--spacing-md);
+    position: relative;
+    z-index: 1;
+}
+
+.wishlist-content {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all var(--transition-slow);
+}
+
+.wishlist-content.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.wishlist-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.wishlist-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.6;
+}
+
+/* Email Form */
+.email-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.input-container {
+    position: relative;
+    width: 100%;
+}
+
+.input-container input {
+    width: 100%;
+    padding: var(--spacing-sm) 0;
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text-muted);
+    outline: none;
+    transition: all var(--transition-medium);
+}
+
+.input-container input::placeholder {
+    color: var(--text-muted);
+}
+
+.input-container input:focus {
+    border-bottom-color: var(--text-primary);
+}
+
+.input-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--text-primary);
+    transition: width var(--transition-medium);
+}
+
+.input-container input:focus ~ .input-underline {
+    width: 100%;
+}
+
+.submit-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-medium);
+    color: var(--bg-primary);
+    background: var(--text-primary);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Success Message */
+.success-message {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all var(--transition-medium);
+    pointer-events: none;
+    margin-top: var(--spacing-md);
+}
+
+.success-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.success-message p {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+.footer {
+    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-lg);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 400px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--text-muted) 50%, transparent 100%);
+    opacity: 0.3;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-logo {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.footer-tagline {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: var(--font-weight-light);
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
+/* Fade In Animation */
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.fade-in.delay-1 {
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.3s forwards;
+}
+
+.fade-in.delay-2 {
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.6s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Reveal Up Animation */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(60px);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+/* Tablet Landscape */
+@media (max-width: 1024px) {
+    .showcase-container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-md);
+    }
+}
+
+/* Tablet Portrait */
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 3rem;
+        --spacing-xl: 4rem;
+        --spacing-2xl: 5rem;
+    }
+    
+    .showcase-container {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    :root {
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3rem;
+        --spacing-2xl: 4rem;
+    }
+    
+    .hero {
+        padding: var(--spacing-sm);
+    }
+    
+    .showcase,
+    .wishlist {
+        padding: var(--spacing-xl) var(--spacing-sm);
+    }
+    
+    .wallpaper-image {
+        border-radius: var(--radius-md);
+    }
+    
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+/* High Resolution Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    body {
+        -webkit-font-smoothing: subpixel-antialiased;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Dark Mode Support (already dark, but for consistency) */
+@media (prefers-color-scheme: dark) {
+    /* Already optimized for dark mode */
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+.no-scroll {
+    overflow: hidden;
+}

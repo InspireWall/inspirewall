@@ -1,0 +1,42 @@
+# InspireWall - Git Ignore File
+
+# System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Build Files (if you add build process later)
+dist/
+build/
+.cache/
+
+# Dependencies (if you add package management later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Optional: Uncomment if you don't want to commit large images
+# assets/*.jpg
+# assets/*.png
+# assets/*.jpeg
+# assets/*.webp
