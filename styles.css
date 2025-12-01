@@ -34,7 +34,7 @@
     --spacing-2xl: 8rem;
     
     /* Typography */
-    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-weight-light: 300;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
@@ -59,6 +59,7 @@ html {
 
 body {
     font-family: var(--font-family);
+    font-weight: var(--font-weight-normal);
     background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     color: var(--text-primary);
     line-height: 1.6;
@@ -133,21 +134,62 @@ body::before {
     text-transform: lowercase;
 }
 
-/* Scroll Indicator */
-.scroll-indicator {
-    position: absolute;
-    bottom: var(--spacing-lg);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
+/* Hero scroll chevron (chevron rotated to point down) */
+.hero-scroll {
+    margin-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.06);
+    color: var(--text-secondary);
+    font-size: 1.35rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    box-shadow: none;
+    transform: none; /* no rotation - using a down caret icon now */
 }
 
-.scroll-line {
-    width: 2px;
-    height: 40px;
-    background: linear-gradient(180deg, transparent 0%, var(--text-muted) 50%, transparent 100%);
-    animation: scrollPulse 2s ease-in-out infinite;
+.hero-scroll:focus {
+    outline: 3px solid rgba(255, 255, 255, 0.08);
+    outline-offset: 3px;
 }
+
+.hero-scroll:hover,
+.hero-scroll:focus {
+    color: var(--text-primary);
+    border-color: rgba(255,255,255,0.16);
+    transform: scale(1.08);
+    box-shadow: 0 8px 30px rgba(255,255,255,0.12), 0 0 14px rgba(255,255,255,0.06);
+}
+
+/* Gentle pulsing animation to catch the eye on non-interaction */
+@keyframes heroPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.95; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.hero-scroll.pulse {
+    animation: heroPulse 2.5s ease-in-out infinite;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-scroll.pulse { animation: none; }
+}
+
+/* Apply Montserrat bold for headings */
+h1, h2, h3, .wishlist-title, .footer-logo {
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Scroll Indicator */
+/* Scroll indicator removed per design request */
 
 @keyframes scrollPulse {
     0%, 100% { opacity: 0.3; transform: translateY(0); }
@@ -166,28 +208,64 @@ body::before {
     padding: var(--spacing-2xl) var(--spacing-md);
     position: relative;
     z-index: 1;
+   
 }
+
 
 .showcase-container {
     max-width: 1200px;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Show 3 columns at desktop widths */
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-lg);
     padding: var(--spacing-md);
+    size: 100%;
 }
 
 .wallpaper-card {
     position: relative;
-    opacity: 0;
-    transform: translateY(60px);
-    transition: all var(--transition-slow);
+    opacity: 1;
+    transform: none;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium), filter var(--transition-medium), opacity var(--transition-medium);
+    cursor: pointer;
 }
 
-.wallpaper-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+/* Transitioning class used when rotating content in/out */
+.wallpaper-card.transitioning {
+    opacity: 0;
+    transform: translateY(8px) scale(0.995);
+    transition: opacity 0.35s ease, transform 0.35s ease;
 }
+
+/* Base shadow for gallery cards to provide subtle depth */
+
+
+/* Focused card style when hovered or focused */
+.wallpaper-card.is-focused {
+    z-index: 20;
+    /* bring the focused card above others */
+    /* we want the image to focus, not the entire card - style kept minimal here */
+}
+
+/* Dim non-focused cards to make the focused card stand out */
+.wallpaper-card.is-dimmed {
+    filter: brightness(0.45) contrast(0.85) saturate(0.9) blur(0px);
+    opacity: 0.66;
+    transition: filter var(--transition-medium), opacity var(--transition-medium);
+}
+
+/* Subtle base shadow on the image only (not the card/description) */
+
+/* When the card is focused show a stronger image shadow and scale the image */
+.wallpaper-card.is-focused .wallpaper-image {
+    transform: translateY(-12px) scale(1.06);
+    box-shadow: 0 48px 110px rgba(255,255,255,0.12), 0 0 40px rgba(255,255,255,0.10);
+    filter: brightness(1.03) saturate(1.06);
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium), filter var(--transition-medium);
+}
+
+/* reveal animation not used for the gallery */
 
 .wallpaper-image {
     position: relative;
@@ -196,39 +274,199 @@ body::before {
     border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--bg-secondary);
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 36px rgba(255, 255, 255, 0.06); /* subtle white glow under the wallpaper image only */
     transition: all var(--transition-medium);
     cursor: pointer;
 }
 
 .wallpaper-image:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 
-        0 30px 80px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(255, 255, 255, 0.1),
-        0 0 40px rgba(255, 255, 255, 0.1);
+    transform: translateY(-8px) scale(1.04);
 }
 
 .wallpaper-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition-slow);
+    transition: opacity 0.35s ease, transform var(--transition-slow);
 }
 
 .wallpaper-image:hover img {
-    transform: scale(1.05);
+    transform: scale(1.03);
+}
+
+.wallpaper-card.transitioning .wallpaper-image img {
+    opacity: 0;
+    transform: scale(0.98) translateY(6px);
+}
+
+/* Ensure hover states on the card elevate the image slightly */
+.wallpaper-card:hover .wallpaper-image,
+.wallpaper-card:focus-within .wallpaper-image {
+    transform: translateY(-12px) scale(1.06);
+    box-shadow: 0 48px 110px rgba(255,255,255,0.12), 0 0 40px rgba(255,255,255,0.10);
+    filter: brightness(1.02) saturate(1.05);
+}
+
+/* Hover/active card effect */
+.wallpaper-card:hover {
+    /* No transform on the card itself - image handles focus/transform */
+    z-index: 20; /* match focused z-index so hovering brings the card forward */
+}
+
+/* On hover, brighten the description so it reads together with the image */
+.wallpaper-card:hover .description-text {
+    color: var(--text-primary);
+    transform: translateY(-6px);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Expanded card when clicked */
+.wallpaper-card.is-expanded {
+    /* Keep card scale minimal; image will scale for emphasis to avoid scaling text */
+    z-index: 40;
+}
+
+/* Expanded card's shadow should appear only under the image */
+.wallpaper-card.is-expanded .wallpaper-image {
+    transform: scale(1.08) translateY(-6px);
+    box-shadow: 0 40px 120px rgba(255,255,255,0.10), 0 0 40px rgba(255,255,255,0.08);
+}
+
+/* On smaller screens, expanded card still fits full width */
+@media (max-width: 1024px) {
+    /* On smaller screens, only slightly scale instead of taking the full width */
+    .wallpaper-card.is-expanded { transform: none; }
+    .wallpaper-card.is-expanded .wallpaper-image { transform: scale(1.06) translateY(-4px); }
+}
+
+/* Lightbox styles */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox img {
+    max-width: 92%;
+    max-height: 92%;
+    border-radius: var(--radius-md);
+    box-shadow: 0 30px 80px rgba(255,255,255,0.06);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+/* Spotlight (centered, small overlay, for single-click) */
+.spotlight {
+    position: fixed;
+    inset: 0; /* cover viewport */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45); /* dim the background a bit */
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.spotlight.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.spotlight-inner {
+    max-width: 780px; /* keep it noticeably larger than the thumbnails but not fullscreen */
+    width: calc(min(70vw, 780px));
+    max-height: calc(70vh);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 40px 120px rgba(255,255,255,0.06);
+}
+
+.spotlight img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--radius-lg);
+}
+
+/* Make sure the close button sits above the spotlight inner content */
+.spotlight .lightbox-close {
+    z-index: 10001;
+    color: var(--text-primary);
+}
+
+/* Responsive: fallback to 2/1 columns */
+@media (max-width: 1024px) {
+    .showcase-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .showcase-container { grid-template-columns: 1fr; }
 }
 
 /* Placeholder styling for when images are loading */
-.wallpaper-image::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-    z-index: -1;
+/* removed placeholder ::before gradient to avoid darker overlay behind image/description */
+
+.wallpaper-description {
+    margin-top: 0.75rem;
+    text-align: center;
+}
+
+.description-text {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    padding: 0 0.5rem;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* When a card is focused, uplift and brighten description text */
+.wallpaper-card.is-focused .description-text {
+    color: var(--text-primary);
+    opacity: 1;
+    transform: translateY(-6px);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* When a card is dimmed, reduce description visibility */
+.wallpaper-card.is-dimmed .description-text {
+    opacity: 0.6;
+}
+
+.wallpaper-card.transitioning .description-text {
+    opacity: 0;
+    transform: translateY(6px);
 }
 
 /* ==========================================
@@ -243,6 +481,7 @@ body::before {
     padding: var(--spacing-2xl) var(--spacing-md);
     position: relative;
     z-index: 1;
+
 }
 
 .wishlist-content {
@@ -258,7 +497,6 @@ body::before {
     opacity: 1;
     transform: translateY(0);
 }
-
 .wishlist-title {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: var(--font-weight-semibold);
@@ -450,6 +688,13 @@ body::before {
 .reveal-up {
     opacity: 0;
     transform: translateY(60px);
+}
+
+/* Show reveal elements when they receive the `.is-visible` class */
+.reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all var(--transition-medium);
 }
 
 /* ==========================================

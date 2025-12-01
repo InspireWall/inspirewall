@@ -1,0 +1,10 @@
+{
+  "name": "inspirewall-website",
+  "version": "1.0.0",
+  "scripts": {
+    "generate:manifest": "node scripts/generate-wallpapers-json.js",
+    "copy:images": "node scripts/copy-images-to-images.js",
+    "start:server": "node server/index.js",
+    "dev:server": "nodemon server/index.js"
+  }
+}

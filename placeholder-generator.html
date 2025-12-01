@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspireWall - Placeholder Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #b0b0b0;
+            margin-bottom: 3rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .wallpaper-preview {
+            background: #111;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9 / 16;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .download-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #ffffff;
+            color: #0a0a0a;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-box h3 {
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .info-box p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-box code {
+            background: #1a1a1a;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .warning {
+            background: rgba(255, 200, 0, 0.1);
+            border-color: rgba(255, 200, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 Placeholder Wallpaper Generator</h1>
+        <p class="subtitle">Temporary placeholders for testing. Replace with your actual wallpapers!</p>
+        
+        <div class="info-box warning">
+            <h3>⚠️ These are temporary placeholders</h3>
+            <p>Use these to test your website while you prepare your real wallpapers.</p>
+            <p><strong>To use:</strong> Right-click each wallpaper → Save As → Save to <code>assets/</code> folder with correct name</p>
+        </div>
+        
+        <div class="grid">
+            <div class="wallpaper-preview">
+                <div class="canvas-container">
+                    <canvas id="canvas1" width="1080" height="1920"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadWallpaper('canvas1', 'wallpaper-1.jpg')">
+                    Download wallpaper-1.jpg
+                </button>
+            </div>
+            
+            <div class="wallpaper-preview">
+                <div class="canvas-container">
+                    <canvas id="canvas2" width="1080" height="1920"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadWallpaper('canvas2', 'wallpaper-2.jpg')">
+                    Download wallpaper-2.jpg
+                </button>
+            </div>
+            
+            <div class="wallpaper-preview">
+                <div class="canvas-container">
+                    <canvas id="canvas3" width="1080" height="1920"></canvas>
+                </div>
+                <button class="download-btn" onclick="downloadWallpaper('canvas3', 'wallpaper-3.jpg')">
+                    Download wallpaper-3.jpg
+                </button>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>📝 Next Steps:</h3>
+            <p>1. Download all 3 placeholder wallpapers using the buttons above</p>
+            <p>2. Save them to: <code>C:\Users\mambo\OneDrive\Desktop\InspireWall\Website\assets\</code></p>
+            <p>3. Open <code>index.html</code> to see them in action</p>
+            <p>4. Replace with your real wallpapers when ready</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>🎨 Where to Find Real Wallpapers:</h3>
+            <p>• <strong>Unsplash.com</strong> - Free professional photos</p>
+            <p>• <strong>Pexels.com</strong> - Free stock images</p>
+            <p>• <strong>Canva.com</strong> - Design your own (use 1080×1920px template)</p>
+            <p>• <strong>Figma.com</strong> - Professional design tool</p>
+        </div>
+    </div>
+    
+    <script>
+        // Generate placeholder wallpapers
+        function generateWallpaper(canvasId, number, quote) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            
+            if (number === 1) {
+                gradient.addColorStop(0, '#1a1a1a');
+                gradient.addColorStop(1, '#0a0a0a');
+            } else if (number === 2) {
+                gradient.addColorStop(0, '#0a0a0a');
+                gradient.addColorStop(0.5, '#1a1410');
+                gradient.addColorStop(1, '#0a0a0a');
+            } else {
+                gradient.addColorStop(0, '#0f0f0f');
+                gradient.addColorStop(1, '#050505');
+            }
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add subtle texture
+            for (let i = 0; i < 1000; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const opacity = Math.random() * 0.1;
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.fillRect(x, y, 1, 1);
+            }
+            
+            // Central glow effect
+            const glowGradient = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 0,
+                canvas.width / 2, canvas.height / 2, canvas.width / 2
+            );
+            glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.05)');
+            glowGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = glowGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Brand name at top
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 80px Montserrat, Inter, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('InspireWall', canvas.width / 2, 250);
+            
+            // Quote text
+            ctx.fillStyle = '#b0b0b0';
+            ctx.font = '48px Montserrat, Inter, Arial, sans-serif';
+            const words = quote.split(' ');
+            let line = '';
+            let y = canvas.height / 2 - 100;
+            const lineHeight = 80;
+            const maxWidth = canvas.width - 200;
+            
+            words.forEach((word) => {
+                const testLine = line + word + ' ';
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && line !== '') {
+                    ctx.fillText(line, canvas.width / 2, y);
+                    line = word + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            });
+            ctx.fillText(line, canvas.width / 2, y);
+            
+            // Number indicator
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.font = 'bold 200px Montserrat, Inter, Arial, sans-serif';
+            ctx.fillText(`0${number}`, canvas.width / 2, canvas.height - 200);
+            
+            // "Placeholder" watermark
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.font = '32px Montserrat, Inter, Arial, sans-serif';
+            ctx.fillText('[ PLACEHOLDER ]', canvas.width / 2, canvas.height - 100);
+        }
+        
+        // Download function
+        function downloadWallpaper(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+        
+        // Generate all wallpapers on load
+        window.addEventListener('load', () => {
+            generateWallpaper('canvas1', 1, 'Here to Inspire');
+            generateWallpaper('canvas2', 2, 'Your journey starts now');
+            generateWallpaper('canvas3', 3, 'Dream Create Achieve');
+        });
+    </script>
+</body>
+</html>

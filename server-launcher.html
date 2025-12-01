@@ -99,10 +99,25 @@
                     <li><code>wallpaper-3.jpg</code></li>
                 </ul>
             </li>
+            <li><strong>Optional - Add to manifest:</strong> When adding or changing wallpapers, update <code>assets/wallpapers.json</code> with entries for each image (src, alt, desc). You can automate this by running the helper script:
+                <pre><code>node scripts/generate-wallpapers-json.js</code></pre>
+                The script scans <code>assets/Images/</code> and creates/updates <code>assets/wallpapers.json</code>.
+            </li>
+            <li><strong>Optional - Move images into <code>images/</code>:</strong> If you want wallpaper files to live at the top-level <code>images/</code> folder, run the copy helper and re-generate the manifest:
+                <pre><code>node scripts/copy-images-to-images.js
+node scripts/generate-wallpapers-json.js</code></pre>
+                The generator will prefer `images/` if present and write entries to `wallpapers.json` for the site to consume.
+            </li>
+            </li>
             <li><strong>Recommended Size:</strong> 1080×1920px (9:16 aspect ratio)</li>
             <li><strong>Open:</strong> Click the button above or open <code>index.html</code> directly</li>
             <li><strong>Test Mobile:</strong> Use browser DevTools (F12) to test responsive design</li>
-            <li><strong>Email Integration:</strong> Check <code>script.js</code> to connect your backend</li>
+            <li><strong>Email Integration:</strong> There is a minimal Express backend to collect emails: <code>server/index.js</code>. Run it locally with:
+                <pre><code>cd server; npm install; npm run dev
+OR
+npm start</code></pre>
+                By default it stores emails to <code>data/emails.json</code>. To forward to Mailchimp, set <code>MAILCHIMP_API_KEY</code> and <code>MAILCHIMP_LIST_ID</code> in <code>server/.env</code>.
+            </li>
         </ol>
     </div>
 </body>
